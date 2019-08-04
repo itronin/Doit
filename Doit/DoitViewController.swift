@@ -12,9 +12,14 @@ class DoitViewController: UITableViewController {
 
     var itemArray = ["Create a business idea", "Develop a monetization plan", "Set a milestones"]
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        if let items = defaults.array(forKey: "DoitListArray") as? [String] {
+            itemArray = items
+        }
     }
 
     //MARK: Tableview DataSource Methods
@@ -46,6 +51,9 @@ class DoitViewController: UITableViewController {
         let action = UIAlertAction(title: "Добавить", style: .default) { (action) in
             //what will happen whan user clicks the Add button on UIAlert
             self.itemArray.append(textField.text!)
+            
+            self.defaults.set(self.itemArray, forKey: "DoitListArray")
+            
             self.tableView.reloadData()
         }
         alert.addTextField { (alertTextField) in
